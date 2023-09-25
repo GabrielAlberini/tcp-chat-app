@@ -1,22 +1,36 @@
 // MÓDULO SERVIDOR
-import net from "node:net";
+
+import net from "net";
 import readline from "readline-sync";
-import { pushMessage } from "./controller.js";
+import * as controller from "./controller.js";
 
 const serverTCP = net.createServer();
-const PORT = 7200;
+const PORT = 7202;
+const userName = process.argv[2] || "Unknown";
 
 serverTCP.on("connection", (socket) => {
   socket.on("data", (clientData) => {
     const clientMsg = clientData.toString();
-    console.log("CLIENT --> ", clientMsg);
-    let serverMsg = readline.question("SERVER --> ");
-    const newMsg = {
-      message: clientMsg,
-      sentBy: process.argv[3],
-      date: new Date().toLocaleString(),
-    };
-    pushMessage(newMsg);
+    let serverMsg;
+
+    console.log("CLIENT -->", clientMsg);
+
+    serverMsg = readline.question("SERVER --> ");
+
+    while (serverMsg == "--history") {
+      const messagesCollection = controller.getHistory();
+      console.log(messagesCollection);
+      serverMsg = readline.question("SERVER --> ");
+    }
+
+    while (serverMsg == "--eraseMessages") {
+      controller.eraseHistory();
+      console.log("History has been deleted.");
+      serverMsg = readline.question("SERVER --> ");
+    }
+
+    controller.pushMessage(serverMsg, userName);
+
     socket.write(serverMsg);
   });
 
@@ -27,6 +41,7 @@ serverTCP.on("connection", (socket) => {
 });
 
 // SERVER RUNNING
+
 serverTCP.listen(PORT, () => {
   console.log("Server is running on port", PORT);
 });

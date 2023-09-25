@@ -5,33 +5,53 @@
 // Desarrollar 3 funciones que permitan leer, borrar y actualizar el JSON.
 // Exportar las funciones usando la sintaxis de ECMAScript Modules (export {...}).
 
-import { readFileSync, writeFileSync } from "node:fs";
+import * as fs from "fs";
 
-//1
+const PATH = "./history.json";
+
+function getDate() {
+  const date = new Date();
+
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  return `${day}/${month}/${year} - ${hours}:${minutes}`;
+}
+
+function createMessageObj(message, userName) {
+  const messageObj = {};
+
+  messageObj.message = message;
+  messageObj.sentBy = userName;
+  messageObj.date = getDate();
+
+  return messageObj;
+}
+
 const getHistory = () => {
-  const history = readFileSync("history.json");
-  const arrayHistory = JSON.parse(history);
-  const jsonHistory = JSON.stringify(arrayHistory);
+  const messagesCollectionBuffer = fs.readFileSync(PATH);
+  const messagesCollection = JSON.parse(messagesCollectionBuffer);
 
-  return jsonHistory;
+  return messagesCollection;
 };
 
 const eraseHistory = () => {
-  writeFileSync("history.json", "[]");
-  return "Deleted History";
+  fs.writeFileSync(PATH, "[]");
+
+  return;
 };
 
-const pushMessage = (message) => {
-  if (
-    message.message !== "--history" ||
-    message.message !== "--eraseMessages"
-  ) {
-    const history = readFileSync("history.json");
-    const arrayHistory = JSON.parse(history);
-    arrayHistory.push(message);
-    const jsonHistory = JSON.stringify(arrayHistory);
-    writeFileSync("history.json", jsonHistory);
-  }
+const pushMessage = (message, userName) => {
+  const messagesCollection = getHistory();
+
+  const messageObj = createMessageObj(message, userName);
+  messagesCollection.push(messageObj);
+
+  const historyJsonString = JSON.stringify(messagesCollection);
+  fs.writeFileSync(PATH, historyJsonString);
 };
 
 export { getHistory, eraseHistory, pushMessage };

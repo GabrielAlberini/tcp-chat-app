@@ -1,36 +1,34 @@
 // MÓDULO CLIENTE
-
 import net from "net";
 import readline from "readline-sync";
-import { getHistory, eraseHistory, pushMessage } from "./controller.js";
+import * as controller from "./controller.js";
 
 const OPTIONS = {
-  port: 7200,
+  port: 7202,
   host: "127.0.0.1",
 };
 
 const clientTCP = net.createConnection(OPTIONS);
+const userName = process.argv[2] || "Unknown";
 
 const sendMessage = () => {
-  let message = readline.question("CLIENT --> ");
-  while (message === "--history") {
-    const parsedHistoryData = JSON.parse(getHistory());
-    console.log(parsedHistoryData);
-    message = readline.question("CLIENT --> ");
-  }
-  while (message === "--eraseMessages") {
-    let deletedHistory = eraseHistory();
-    console.log(deletedHistory);
-    message = readline.question("CLIENT --> ");
+  let clientMsg = readline.question("CLIENT --> ");
+
+  while (clientMsg == "--history") {
+    const messagesCollection = controller.getHistory();
+    console.log(messagesCollection);
+    clientMsg = readline.question("CLIENT --> ");
   }
 
-  const newMsg = {
-    message: message,
-    sentBy: process.argv[3],
-    date: new Date().toLocaleString(),
-  };
-  clientTCP.write(message);
-  pushMessage(newMsg);
+  while (clientMsg == "--eraseMessages") {
+    const isDeleted = controller.eraseHistory();
+    isDeleted ? console.log("History has been deleted.") : console.log("Error");
+    clientMsg = readline.question("CLIENT --> ");
+  }
+
+  controller.pushMessage(clientMsg, userName);
+
+  clientTCP.write(clientMsg);
 };
 
 clientTCP.on("connect", () => {

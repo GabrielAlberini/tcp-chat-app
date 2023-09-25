@@ -6,10 +6,7 @@
 import * as model from "./model.js";
 
 const getHistory = () => model.getHistory();
-// const verhistorial = getHistory()
-// console.log(verhistorial);
+const eraseHistory = () => model.eraseHistory();
+const pushMessage = (message, userName) => model.pushMessage(message, userName);
 
-const eraseHistory = () => model.eraseHistory()
-const pushMessage = (message) => model.pushMessage(message)
-
-export {getHistory, eraseHistory, pushMessage}
+export { getHistory, eraseHistory, pushMessage };
