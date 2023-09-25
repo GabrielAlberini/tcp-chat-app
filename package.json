@@ -1,0 +1,24 @@
+{
+  "name": "tcp-chat",
+  "version": "1.0.0",
+  "description": "chat via protocol tcp ",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "tcp",
+    "node",
+    "npm",
+    "protocol",
+    "client",
+    "server"
+  ],
+  "author": "gabrielalberini",
+  "license": "ISC",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
+}
