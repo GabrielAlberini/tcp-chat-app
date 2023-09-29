@@ -5,8 +5,17 @@
 
 import * as model from "./model.js";
 
-const getHistory = () => model.getHistory();
+const getHistory = () => {
+  const data = model.getHistory();
+  if (data.length > 0) {
+    return data;
+  } else {
+    return "No existe información en la base de datos.";
+  }
+};
+
 const eraseHistory = () => model.eraseHistory();
+
 const pushMessage = (message, userName) => model.pushMessage(message, userName);
 
 export { getHistory, eraseHistory, pushMessage };

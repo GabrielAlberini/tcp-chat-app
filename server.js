@@ -1,12 +1,11 @@
 // MÓDULO SERVIDOR
-
 import net from "net";
 import readline from "readline-sync";
 import * as controller from "./controller.js";
 
 const serverTCP = net.createServer();
-const PORT = 7202;
-const userName = process.argv[2] || "Unknown";
+const PORT = 7204;
+const userName = process.argv[3] || "Unknown";
 
 serverTCP.on("connection", (socket) => {
   socket.on("data", (clientData) => {

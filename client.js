@@ -1,20 +1,20 @@
 // MÓDULO CLIENTE
-import net from "net";
+import net from "node:net";
 import readline from "readline-sync";
 import * as controller from "./controller.js";
 
 const OPTIONS = {
-  port: 7202,
+  port: 7204,
   host: "127.0.0.1",
 };
 
 const clientTCP = net.createConnection(OPTIONS);
-const userName = process.argv[2] || "Unknown";
+const userName = process.argv[3] || "Unknown";
 
 const sendMessage = () => {
   let clientMsg = readline.question("CLIENT --> ");
 
-  while (clientMsg == "--history") {
+  while (clientMsg === "--history") {
     const messagesCollection = controller.getHistory();
     console.log(messagesCollection);
     clientMsg = readline.question("CLIENT --> ");

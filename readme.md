@@ -20,4 +20,4 @@ date: 08/06/2023 14:53
 - Cada usuario debe poder enviar al otro ciertos comandos que ejecutarán acciones:
 
   ► --history | Devuelve el historial completo de la conversación
-  ► --eraseMessages | Borra el historial completo y deja el JSON asi: [{}]
+  ► --eraseMessages | Borra el historial completo y deja el JSON asi: []

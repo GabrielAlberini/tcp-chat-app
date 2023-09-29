@@ -40,14 +40,13 @@ const getHistory = () => {
 
 const eraseHistory = () => {
   fs.writeFileSync(PATH, "[]");
-
-  return;
+  return true;
 };
 
 const pushMessage = (message, userName) => {
   const messagesCollection = getHistory();
-
   const messageObj = createMessageObj(message, userName);
+
   messagesCollection.push(messageObj);
 
   const historyJsonString = JSON.stringify(messagesCollection);
